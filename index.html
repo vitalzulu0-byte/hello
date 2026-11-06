@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <p>Enter your name:</p>
+  <input id="name">
+  <button onclick="run()">Run</button>
+  <h2 id="out"></h2>
+
+  <script>
+    function run() {
+      var name = document.getElementById("name").value;
+      document.getElementById("out").textContent =
+        "Hello!!! " + name + ", Vital has a crush on, you can you 😘";
+    }
+  </script>
+</body>
+</html>
