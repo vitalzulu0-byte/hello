@@ -2,65 +2,428 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vital's Page</title>
+  <title>CTTI Programs</title>
   <style>
     body { font-family: Arial; background: #f2f6fa; margin: 0; padding: 16px; }
-    .card { background: white; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
     h1 { text-align: center; color: #1a4d8f; }
-    input, button { font-size: 16px; padding: 8px; margin: 4px 0; }
-    button { background: #1a4d8f; color: white; border: none; border-radius: 6px; }
+    #search { width: 100%; box-sizing: border-box; font-size: 16px; padding: 10px; margin-bottom: 8px; }
+    .filters button { background: #dbe6f5; color: #1a4d8f; border: none; border-radius: 16px;
+                      padding: 8px 12px; margin: 3px 2px; font-size: 14px; }
+    .filters button.active { background: #1a4d8f; color: white; }
+    .card { background: white; border-radius: 10px; padding: 14px; margin-top: 12px; }
+    .card h3 { margin: 0 0 6px; color: #1a4d8f; }
+    .tag { font-size: 13px; color: #555; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td { padding: 4px 0; border-bottom: 1px solid #eee; }
+    td:last-child { text-align: right; }
+    .note { font-size: 12px; color: #666; }
     a.btn { display: block; background: #25a244; color: white; text-decoration: none;
-            padding: 10px; border-radius: 6px; margin: 8px 0; text-align: center; }
+            padding: 10px; border-radius: 6px; margin-top: 12px; text-align: center; }
   </style>
 </head>
 <body>
-  <h1>Welcome to Vital's Page</h1>
+  <h1>Find a Program at CTTI</h1>
+  <p style="text-align:center">Chipata Trades Training Institute<br>January 2027 intake</p>
 
   <div class="card">
-    <h2>About me</h2>
-    <p>Student at Chipata Trades Training Institute, studying Computer Studies.</p>
+    <h3>Fees per term</h3>
+    <p><b>Day scholar: K9,248</b><br><b>Boarder: K10,448</b></p>
+    <details>
+      <summary>See the full breakdown</summary>
+      <table>
+        <tr><td>Application form (once off)</td><td>K150</td></tr>
+        <tr><td>Tuition</td><td>K2,458</td></tr>
+        <tr><td>Lodging / bed space (boarders)</td><td>K1,200</td></tr>
+        <tr><td>Sports fee</td><td>K120</td></tr>
+        <tr><td>Union fee</td><td>K120</td></tr>
+        <tr><td>Enrolment & ID card (annual)</td><td>K220</td></tr>
+        <tr><td>Library</td><td>K200</td></tr>
+        <tr><td>Medical fees</td><td>K10</td></tr>
+        <tr><td>Internet fees</td><td>K150</td></tr>
+        <tr><td>Maintenance fee</td><td>K150</td></tr>
+        <tr><td>Protective clothes</td><td>K1,170</td></tr>
+        <tr><td>Other requirements</td><td>K2,000</td></tr>
+        <tr><td>Food supplements</td><td>K2,500</td></tr>
+      </table>
+    </details>
+    <p class="note">These fees are for CDF-sponsored students, January 2026 intake. Fees may change. Please confirm with the institute.</p>
   </div>
 
-  <div class="card">
-    <h2>Say hello</h2>
-    <input id="name" placeholder="Enter your name">
-    <button onclick="run()">Run</button>
-    <h3 id="out"></h3>
-  </div>
+  <input id="search" placeholder="Search a program..." oninput="show()" style="margin-top:16px">
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
 
-  <div class="card">
-    <h2>Calculator</h2>
-    <input id="a" type="number" placeholder="First number"><br>
-    <input id="b" type="number" placeholder="Second number"><br>
-    <button onclick="calc('+')">+</button>
-    <button onclick="calc('-')">-</button>
-    <button onclick="calc('*')">×</button>
-    <button onclick="calc('/')">÷</button>
-    <h3 id="result"></h3>
-  </div>
-
-  <div class="card">
-    <h2>Contact me</h2>
-    <a class="btn" href="https://wa.me/260970000000">WhatsApp me</a>
-    <a class="btn" href="tel:+260970000000">Call me</a>
-  </div>
+  <a class="btn" href="tel:+260965098922">Call the Training Manager</a>
+  <a class="btn" href="https://www.ctti.ac.zm">Visit the CTTI website</a>
+  <p class="note" style="text-align:center">Email: chipatatrades@yahoo.com</p>
 
   <script>
-    function run() {
-      var name = document.getElementById("name").value;
-      document.getElementById("out").textContent =
-        "Hello!! " + name + ", welcome to Vitals page, keep learning, keep growing!";
+    var programs = [
+      { name: "Electrical Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,930" },
+      { name: "Automotive Engineering", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,930" },
+      { name: "Carpentry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,260" },
+      { name: "Bricklaying and Masonry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,995" },
+      { name: "Fashion Design and Textile Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,325" },
+      { name: "General Agriculture", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K3,590" },
+      { name: "Secretarial and Office Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Food and Beverages Services", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K2,600" },
+      { name: "Food Production", dept: "Business and Agriculture", level: "Trade Test levels", exam: "K1,250" },
+      { name: "Records Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,200" },
+      { name: "Computer Studies", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Purchasing & Supply", dept: "Business and Agriculture", level: "Diploma", exam: "Contact the institute" }
+    ];
+
+    var currentDept = "All";
+
+    function makeFilters() {
+      var depts = ["All"];
+      programs.forEach(function (p) { if (depts.indexOf(p.dept) < 0) depts.push(p.dept); });
+      var html = "";
+      depts.forEach(function (d) {
+        html += '<button class="' + (d == currentDept ? "active" : "") + '" onclick="setDept(\'' + d + '\')">' + d + '</button>';
+      });
+      document.getElementById("filters").innerHTML = html;
     }
-    function calc(op) {
-      var a = Number(document.getElementById("a").value);
-      var b = Number(document.getElementById("b").value);
-      var r;
-      if (op == '+') r = a + b;
-      if (op == '-') r = a - b;
-      if (op == '*') r = a * b;
-      if (op == '/') r = b == 0 ? "Cannot divide by 0" : a / b;
-      document.getElementById("result").textContent = "Answer: " + r;
+
+    function setDept(d) { currentDept = d; makeFilters(); show(); }
+
+    function show() {
+      var q = document.getElementById("search").value.toLowerCase();
+      var html = "";
+      programs.forEach(function (p) {
+        var match = (p.name + " " + p.level).toLowerCase().indexOf(q) >= 0;
+        if (match && (currentDept == "All" || p.dept == currentDept)) {
+          html += '<div class="card"><h3>' + p.name + '</h3>' +
+                  '<div class="tag">' + p.dept + ' | ' + p.level + '</div>' +
+                  '<p><b>Examination fee:</b> ' + p.exam + '</p></div>';
+        }
+      });
+      document.getElementById("list").innerHTML = html || "<p>No program found.</p>";
     }
+
+    makeFilters();
+    show();
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CTTI Programs</title>
+  <style>
+    body { font-family: Arial; background: #f2f6fa; margin: 0; padding: 16px; }
+    h1 { text-align: center; color: #1a4d8f; }
+    #search { width: 100%; box-sizing: border-box; font-size: 16px; padding: 10px; margin-bottom: 8px; }
+    .filters button { background: #dbe6f5; color: #1a4d8f; border: none; border-radius: 16px;
+                      padding: 8px 12px; margin: 3px 2px; font-size: 14px; }
+    .filters button.active { background: #1a4d8f; color: white; }
+    .card { background: white; border-radius: 10px; padding: 14px; margin-top: 12px; }
+    .card h3 { margin: 0 0 6px; color: #1a4d8f; }
+    .tag { font-size: 13px; color: #555; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td { padding: 4px 0; border-bottom: 1px solid #eee; }
+    td:last-child { text-align: right; }
+    .note { font-size: 12px; color: #666; }
+    a.btn { display: block; background: #25a244; color: white; text-decoration: none;
+            padding: 10px; border-radius: 6px; margin-top: 12px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Find a Program at CTTI</h1>
+  <p style="text-align:center">Chipata Trades Training Institute<br>January 2027 intake</p>
+
+  <div class="card">
+    <h3>Fees per term</h3>
+    <p><b>Day scholar: K9,248</b><br><b>Boarder: K10,448</b></p>
+    <details>
+      <summary>See the full breakdown</summary>
+      <table>
+        <tr><td>Application form (once off)</td><td>K150</td></tr>
+        <tr><td>Tuition</td><td>K2,458</td></tr>
+        <tr><td>Lodging / bed space (boarders)</td><td>K1,200</td></tr>
+        <tr><td>Sports fee</td><td>K120</td></tr>
+        <tr><td>Union fee</td><td>K120</td></tr>
+        <tr><td>Enrolment & ID card (annual)</td><td>K220</td></tr>
+        <tr><td>Library</td><td>K200</td></tr>
+        <tr><td>Medical fees</td><td>K10</td></tr>
+        <tr><td>Internet fees</td><td>K150</td></tr>
+        <tr><td>Maintenance fee</td><td>K150</td></tr>
+        <tr><td>Protective clothes</td><td>K1,170</td></tr>
+        <tr><td>Other requirements</td><td>K2,000</td></tr>
+        <tr><td>Food supplements</td><td>K2,500</td></tr>
+      </table>
+    </details>
+    <p class="note">These fees are for CDF-sponsored students, January 2026 intake. Fees may change. Please confirm with the institute.</p>
+  </div>
+
+  <input id="search" placeholder="Search a program..." oninput="show()" style="margin-top:16px">
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+
+  <a class="btn" href="tel:+260965098922">Call the Training Manager</a>
+  <a class="btn" href="https://www.ctti.ac.zm">Visit the CTTI website</a>
+  <p class="note" style="text-align:center">Email: chipatatrades@yahoo.com</p>
+
+  <script>
+    var programs = [
+      { name: "Electrical Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,930" },
+      { name: "Automotive Engineering", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,930" },
+      { name: "Carpentry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,260" },
+      { name: "Bricklaying and Masonry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,995" },
+      { name: "Fashion Design and Textile Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,325" },
+      { name: "General Agriculture", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K3,590" },
+      { name: "Secretarial and Office Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Food and Beverages Services", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K2,600" },
+      { name: "Food Production", dept: "Business and Agriculture", level: "Trade Test levels", exam: "K1,250" },
+      { name: "Records Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,200" },
+      { name: "Computer Studies", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Purchasing & Supply", dept: "Business and Agriculture", level: "Diploma", exam: "Contact the institute" }
+    ];
+
+    var currentDept = "All";
+
+    function makeFilters() {
+      var depts = ["All"];
+      programs.forEach(function (p) { if (depts.indexOf(p.dept) < 0) depts.push(p.dept); });
+      var html = "";
+      depts.forEach(function (d) {
+        html += '<button class="' + (d == currentDept ? "active" : "") + '" onclick="setDept(\'' + d + '\')">' + d + '</button>';
+      });
+      document.getElementById("filters").innerHTML = html;
+    }
+
+    function setDept(d) { currentDept = d; makeFilters(); show(); }
+
+    function show() {
+      var q = document.getElementById("search").value.toLowerCase();
+      var html = "";
+      programs.forEach(function (p) {
+        var match = (p.name + " " + p.level).toLowerCase().indexOf(q) >= 0;
+        if (match && (currentDept == "All" || p.dept == currentDept)) {
+          html += '<div class="card"><h3>' + p.name + '</h3>' +
+                  '<div class="tag">' + p.dept + ' | ' + p.level + '</div>' +
+                  '<p><b>Examination fee:</b> ' + p.exam + '</p></div>';
+        }
+      });
+      document.getElementById("list").innerHTML = html || "<p>No program found.</p>";
+    }
+
+    makeFilters();
+    show();
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CTTI Programs</title>
+  <style>
+    body { font-family: Arial; background: #f2f6fa; margin: 0; padding: 16px; }
+    h1 { text-align: center; color: #1a4d8f; }
+    #search { width: 100%; box-sizing: border-box; font-size: 16px; padding: 10px; margin-bottom: 8px; }
+    .filters button { background: #dbe6f5; color: #1a4d8f; border: none; border-radius: 16px;
+                      padding: 8px 12px; margin: 3px 2px; font-size: 14px; }
+    .filters button.active { background: #1a4d8f; color: white; }
+    .card { background: white; border-radius: 10px; padding: 14px; margin-top: 12px; }
+    .card h3 { margin: 0 0 6px; color: #1a4d8f; }
+    .tag { font-size: 13px; color: #555; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td { padding: 4px 0; border-bottom: 1px solid #eee; }
+    td:last-child { text-align: right; }
+    .note { font-size: 12px; color: #666; }
+    a.btn { display: block; background: #25a244; color: white; text-decoration: none;
+            padding: 10px; border-radius: 6px; margin-top: 12px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Find a Program at CTTI</h1>
+  <p style="text-align:center">Chipata Trades Training Institute<br>January 2027 intake</p>
+
+  <div class="card">
+    <h3>Fees per term</h3>
+    <p><b>Day scholar: K9,248</b><br><b>Boarder: K10,448</b></p>
+    <details>
+      <summary>See the full breakdown</summary>
+      <table>
+        <tr><td>Application form (once off)</td><td>K150</td></tr>
+        <tr><td>Tuition</td><td>K2,458</td></tr>
+        <tr><td>Lodging / bed space (boarders)</td><td>K1,200</td></tr>
+        <tr><td>Sports fee</td><td>K120</td></tr>
+        <tr><td>Union fee</td><td>K120</td></tr>
+        <tr><td>Enrolment & ID card (annual)</td><td>K220</td></tr>
+        <tr><td>Library</td><td>K200</td></tr>
+        <tr><td>Medical fees</td><td>K10</td></tr>
+        <tr><td>Internet fees</td><td>K150</td></tr>
+        <tr><td>Maintenance fee</td><td>K150</td></tr>
+        <tr><td>Protective clothes</td><td>K1,170</td></tr>
+        <tr><td>Other requirements</td><td>K2,000</td></tr>
+        <tr><td>Food supplements</td><td>K2,500</td></tr>
+      </table>
+    </details>
+    <p class="note">These fees are for CDF-sponsored students, January 2026 intake. Fees may change. Please confirm with the institute.</p>
+  </div>
+
+  <input id="search" placeholder="Search a program..." oninput="show()" style="margin-top:16px">
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+
+  <a class="btn" href="tel:+260965098922">Call the Training Manager</a>
+  <a class="btn" href="https://www.ctti.ac.zm">Visit the CTTI website</a>
+  <p class="note" style="text-align:center">Email: chipatatrades@yahoo.com</p>
+
+  <script>
+    var programs = [
+      { name: "Electrical Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,930" },
+      { name: "Automotive Engineering", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,930" },
+      { name: "Carpentry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,260" },
+      { name: "Bricklaying and Masonry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,995" },
+      { name: "Fashion Design and Textile Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,325" },
+      { name: "General Agriculture", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K3,590" },
+      { name: "Secretarial and Office Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Food and Beverages Services", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K2,600" },
+      { name: "Food Production", dept: "Business and Agriculture", level: "Trade Test levels", exam: "K1,250" },
+      { name: "Records Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,200" },
+      { name: "Computer Studies", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Purchasing & Supply", dept: "Business and Agriculture", level: "Diploma", exam: "Contact the institute" }
+    ];
+
+    var currentDept = "All";
+
+    function makeFilters() {
+      var depts = ["All"];
+      programs.forEach(function (p) { if (depts.indexOf(p.dept) < 0) depts.push(p.dept); });
+      var html = "";
+      depts.forEach(function (d) {
+        html += '<button class="' + (d == currentDept ? "active" : "") + '" onclick="setDept(\'' + d + '\')">' + d + '</button>';
+      });
+      document.getElementById("filters").innerHTML = html;
+    }
+
+    function setDept(d) { currentDept = d; makeFilters(); show(); }
+
+    function show() {
+      var q = document.getElementById("search").value.toLowerCase();
+      var html = "";
+      programs.forEach(function (p) {
+        var match = (p.name + " " + p.level).toLowerCase().indexOf(q) >= 0;
+        if (match && (currentDept == "All" || p.dept == currentDept)) {
+          html += '<div class="card"><h3>' + p.name + '</h3>' +
+                  '<div class="tag">' + p.dept + ' | ' + p.level + '</div>' +
+                  '<p><b>Examination fee:</b> ' + p.exam + '</p></div>';
+        }
+      });
+      document.getElementById("list").innerHTML = html || "<p>No program found.</p>";
+    }
+
+    makeFilters();
+    show();
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CTTI Programs</title>
+  <style>
+    body { font-family: Arial; background: #f2f6fa; margin: 0; padding: 16px; }
+    h1 { text-align: center; color: #1a4d8f; }
+    #search { width: 100%; box-sizing: border-box; font-size: 16px; padding: 10px; margin-bottom: 8px; }
+    .filters button { background: #dbe6f5; color: #1a4d8f; border: none; border-radius: 16px;
+                      padding: 8px 12px; margin: 3px 2px; font-size: 14px; }
+    .filters button.active { background: #1a4d8f; color: white; }
+    .card { background: white; border-radius: 10px; padding: 14px; margin-top: 12px; }
+    .card h3 { margin: 0 0 6px; color: #1a4d8f; }
+    .tag { font-size: 13px; color: #555; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td { padding: 4px 0; border-bottom: 1px solid #eee; }
+    td:last-child { text-align: right; }
+    .note { font-size: 12px; color: #666; }
+    a.btn { display: block; background: #25a244; color: white; text-decoration: none;
+            padding: 10px; border-radius: 6px; margin-top: 12px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Vital Zulu's Page</h1>
+<h2 style="text-align:center; color:#1a4d8f;">Find a Program at CTTI</h2>
+
+  <div class="card">
+    <h3>Fees per term</h3>
+    <p><b>Day scholar: K9,248</b><br><b>Boarder: K10,448</b></p>
+    <details>
+      <summary>See the full breakdown</summary>
+      <table>
+        <tr><td>Application form (once off)</td><td>K150</td></tr>
+        <tr><td>Tuition</td><td>K2,458</td></tr>
+        <tr><td>Lodging / bed space (boarders)</td><td>K1,200</td></tr>
+        <tr><td>Sports fee</td><td>K120</td></tr>
+        <tr><td>Union fee</td><td>K120</td></tr>
+        <tr><td>Enrolment & ID card (annual)</td><td>K220</td></tr>
+        <tr><td>Library</td><td>K200</td></tr>
+        <tr><td>Medical fees</td><td>K10</td></tr>
+        <tr><td>Internet fees</td><td>K150</td></tr>
+        <tr><td>Maintenance fee</td><td>K150</td></tr>
+        <tr><td>Protective clothes</td><td>K1,170</td></tr>
+        <tr><td>Other requirements</td><td>K2,000</td></tr>
+        <tr><td>Food supplements</td><td>K2,500</td></tr>
+      </table>
+    </details>
+    <p class="note">These fees are for CDF-sponsored students, January 2026 intake. Fees may change. Please confirm with the institute.</p>
+  </div>
+
+  <input id="search" placeholder="Search a program..." oninput="show()" style="margin-top:16px">
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+
+  <a class="btn" href="tel:+260965098922">Call the Training Manager</a>
+  <a class="btn" href="https://www.ctti.ac.zm">Visit the CTTI website</a>
+  <p class="note" style="text-align:center">Email: chipatatrades@yahoo.com</p>
+
+  <script>
+    var programs = [
+      { name: "Electrical Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,930" },
+      { name: "Automotive Engineering", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,930" },
+      { name: "Carpentry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,260" },
+      { name: "Bricklaying and Masonry", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K2,995" },
+      { name: "Fashion Design and Textile Technology", dept: "Technical Courses", level: "Craft and Trade Test levels", exam: "K3,325" },
+      { name: "General Agriculture", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K3,590" },
+      { name: "Secretarial and Office Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Food and Beverages Services", dept: "Business and Agriculture", level: "Craft and Trade Test levels", exam: "K2,600" },
+      { name: "Food Production", dept: "Business and Agriculture", level: "Trade Test levels", exam: "K1,250" },
+      { name: "Records Management", dept: "Business and Agriculture", level: "Diploma", exam: "K2,200" },
+      { name: "Computer Studies", dept: "Business and Agriculture", level: "Diploma", exam: "K2,800" },
+      { name: "Purchasing & Supply", dept: "Business and Agriculture", level: "Diploma", exam: "Contact the institute" }
+    ];
+
+    var currentDept = "All";
+
+    function makeFilters() {
+      var depts = ["All"];
+      programs.forEach(function (p) { if (depts.indexOf(p.dept) < 0) depts.push(p.dept); });
+      var html = "";
+      depts.forEach(function (d) {
+        html += '<button class="' + (d == currentDept ? "active" : "") + '" onclick="setDept(\'' + d + '\')">' + d + '</button>';
+      });
+      document.getElementById("filters").innerHTML = html;
+    }
+
+    function setDept(d) { currentDept = d; makeFilters(); show(); }
+
+    function show() {
+      var q = document.getElementById("search").value.toLowerCase();
+      var html = "";
+      programs.forEach(function (p) {
+        var match = (p.name + " " + p.level).toLowerCase().indexOf(q) >= 0;
+        if (match && (currentDept == "All" || p.dept == currentDept)) {
+          html += '<div class="card"><h3>' + p.name + '</h3>' +
+                  '<div class="tag">' + p.dept + ' | ' + p.level + '</div>' +
+                  '<p><b>Examination fee:</b> ' + p.exam + '</p></div>';
+        }
+      });
+      document.getElementById("list").innerHTML = html || "<p>No program found.</p>";
+    }
+
+    makeFilters();
+    show();
   </script>
 </body>
 </html>
