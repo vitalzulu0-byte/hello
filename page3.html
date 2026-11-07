@@ -49,18 +49,9 @@
     function run() {
       var name = document.getElementById("name").value;
       document.getElementById("out").textContent =
-        "Hello!! " + name + ", welcome to Vitals page, keep learning, keep growing!";
+        "Hello!! " + name + ", keep learning, keep growing!";
     }
-    function calc(op) {
-      var a = Number(document.getElementById("a").value);
-      var b = Number(document.getElementById("b").value);
-      var r;
-      if (op == '+') r = a + b;
-      if (op == '-') r = a - b;
-      if (op == '*') r = a * b;
-      if (op == '/') r = b == 0 ? "Cannot divide by 0" : a / b;
-      document.getElementById("result").textContent = "Answer: " + r;
-    }
+ 
   </script>
 </body>
 </html>
